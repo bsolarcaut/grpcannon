@@ -16,6 +16,9 @@ type Pool struct {
 
 // NewPool creates a Pool with the given concurrency level.
 func NewPool(concurrency int, conn *grpc.ClientConn, fn CallFunc) *Pool {
+	if concurrency < 1 {
+		concurrency = 1
+	}
 	return &Pool{
 		concurrency: concurrency,
 		conn:        conn,
@@ -37,6 +40,9 @@ func (p *Pool) Run(ctx context.Context, totalRequests int) []Result {
 		n := perWorker
 		if i == 0 {
 			n += remainder
+		}
+		if n == 0 {
+			continue
 		}
 		wg.Add(1)
 		go func(requests int) {
