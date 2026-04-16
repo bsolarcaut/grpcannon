@@ -67,3 +67,8 @@ func (p *Pool) Run(ctx context.Context, totalRequests int) []Result {
 	}
 	return results
 }
+
+// Concurrency returns the number of concurrent workers in the pool.
+func (p *Pool) Concurrency() int {
+	return p.concurrency
+}
