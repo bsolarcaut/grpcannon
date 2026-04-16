@@ -56,3 +56,14 @@ func (p *Printer) Verbose(format string, args ...any) {
 func (p *Printer) Error(err error) {
 	fmt.Fprintf(p.w, "[error] %v\n", err)
 }
+
+// Summary prints a formatted summary section with a title and key/value pairs.
+func (p *Printer) Summary(title string, fields map[string]string) {
+	fmt.Fprintln(p.w, strings.Repeat("-", 40))
+	fmt.Fprintf(p.w, "  %s\n", title)
+	fmt.Fprintln(p.w, strings.Repeat("-", 40))
+	for k, v := range fields {
+		fmt.Fprintf(p.w, "  %-20s %s\n", k+":", v)
+	}
+	fmt.Fprintln(p.w, strings.Repeat("-", 40))
+}
