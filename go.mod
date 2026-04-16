@@ -16,3 +16,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 )
+
+retract v0.0.0 // mistakenly published, do not use
