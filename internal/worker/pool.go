@@ -29,7 +29,13 @@ func NewPool(concurrency int, conn *grpc.ClientConn, fn CallFunc) *Pool {
 // Run spawns concurrency workers, distributes totalRequests among them, and
 // collects all Results into the returned slice. It blocks until all workers
 // finish or the context is cancelled.
+//
+// If totalRequests is less than 1, an empty slice is returned immediately.
 func (p *Pool) Run(ctx context.Context, totalRequests int) []Result {
+	if totalRequests < 1 {
+		return []Result{}
+	}
+
 	resultsCh := make(chan Result, totalRequests)
 
 	perWorker := totalRequests / p.concurrency
