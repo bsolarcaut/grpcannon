@@ -82,3 +82,22 @@ func TestRunner_Run_ContextCancellation(t *testing.T) {
 		t.Error("expected fewer than 100 results due to cancellation")
 	}
 }
+
+func TestRunner_Run_ConcurrencyOne(t *testing.T) {
+	// Ensure that with concurrency=1 all requests are still executed serially
+	// and the total count matches TotalRequests.
+	cfg := baseConfig()
+	cfg.TotalRequests = 7
+	cfg.Concurrency = 1
+
+	caller := &mockCaller{}
+	r := runner.New(cfg, caller)
+	results := r.Run(context.Background())
+
+	if len(results) != 7 {
+		t.Errorf("expected 7 results, got %d", len(results))
+	}
+	if caller.callCount.Load() != 7 {
+		t.Errorf("expected 7 calls, got %d", caller.callCount.Load())
+	}
+}
