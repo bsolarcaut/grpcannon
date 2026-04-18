@@ -49,6 +49,17 @@ func (b *Builder) FromPairs(pairs []string) error {
 	return nil
 }
 
+// Set sets a single key/value pair on the builder, overwriting any
+// existing value for that key. Returns the builder for chaining.
+func (b *Builder) Set(key string, value interface{}) (*Builder, error) {
+	key = strings.TrimSpace(key)
+	if key == "" {
+		return nil, fmt.Errorf("payload: key must not be empty")
+	}
+	b.fields[key] = value
+	return b, nil
+}
+
 // Build returns the assembled payload as a map.
 func (b *Builder) Build() map[string]interface{} {
 	out := make(map[string]interface{}, len(b.fields))
