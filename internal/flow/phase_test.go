@@ -35,3 +35,22 @@ func TestPhase_IsFinal(t *testing.T) {
 		t.Error("PhaseDone should be final")
 	}
 }
+
+func TestPhase_IsActive(t *testing.T) {
+	cases := []struct {
+		phase    Phase
+		active   bool
+	}{
+		{PhaseIdle, false},
+		{PhaseWarmup, true},
+		{PhaseRamp, true},
+		{PhaseSteady, true},
+		{PhaseDrain, true},
+		{PhaseDone, false},
+	}
+	for _, tc := range cases {
+		if got := tc.phase.IsActive(); got != tc.active {
+			t.Errorf("Phase(%s).IsActive() = %v, want %v", tc.phase, got, tc.active)
+		}
+	}
+}
