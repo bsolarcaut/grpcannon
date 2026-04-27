@@ -33,6 +33,12 @@ func TestIsRetryable_ContextCanceled(t *testing.T) {
 	}
 }
 
+func TestIsRetryable_ContextDeadlineExceeded(t *testing.T) {
+	if retry.IsRetryable(context.DeadlineExceeded) {
+		t.Fatal("context.DeadlineExceeded should not be retryable")
+	}
+}
+
 func TestIsRetryable_TransientError(t *testing.T) {
 	if !retry.IsRetryable(errTransient) {
 		t.Fatal("transient error should be retryable")
